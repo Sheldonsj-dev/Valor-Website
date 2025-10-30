@@ -1,3 +1,6 @@
 ﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Soft page background */
+body { background-color: #f9fbff; }
