@@ -16,6 +16,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_BASE: "/"     # ensure assets are rooted for the custom domain
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,6 +26,10 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
+      # Bust CDN cache for index.html so new bundle URLs are picked up
+      - name: Add build timestamp to index.html
+        run: echo "<!-- build $(date -u +%Y-%m-%dT%H:%M:%SZ) -->" >> dist/index.html
+      # Ensure custom domain is shipped with the artifact
       - name: Add CNAME for custom domain
         run: echo thevalorvenue.com > dist/CNAME
       - name: Upload artifact
