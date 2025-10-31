@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import HomePage from "./pages/Home";
-import PricingPage from "./pages/Pricing";
+import HomePage from "@/pages/Home";
+import PricingPage from "@/pages/Pricing";
 
 export default function App() {
   return (
@@ -20,4 +20,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
 
