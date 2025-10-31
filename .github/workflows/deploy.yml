@@ -17,23 +17,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VITE_BASE: "/"     # ensure assets are rooted for the custom domain
+      VITE_BASE: "/"  # root since you’re using a custom apex domain
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
       - run: npm ci
       - run: npm run build
-      # Bust CDN cache for index.html so new bundle URLs are picked up
-      - name: Add build timestamp to index.html
-        run: echo "<!-- build $(date -u +%Y-%m-%dT%H:%M:%SZ) -->" >> dist/index.html
-      # Ensure custom domain is shipped with the artifact
-      - name: Add CNAME for custom domain
+      # SPA routing fallback (copy created by your postbuild; keep as belt-and-suspenders)
+      - name: Ensure 404.html exists
+        run: |
+          if [ ! -f dist/404.html ]; then cp dist/index.html dist/404.html; fi
+      # Custom domain
+      - name: Add CNAME
         run: echo thevalorvenue.com > dist/CNAME
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # Cache-bust HTML so CDN picks new bundle filename
+      - name: Bust CDN by appending timestamp comment
+        run: echo "<!-- build $(date -u +%Y-%m-%dT%H:%M:%SZ) -->" >> dist/index.html
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
@@ -44,6 +47,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
