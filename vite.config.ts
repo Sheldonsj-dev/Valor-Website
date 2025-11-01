@@ -2,7 +2,16 @@
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  base: "./",
   plugins: [react()],
-  base: "/",           // custom domain uses "/"
+  resolve: { alias: { "@": "/src" } }
+});
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  base: "./",           // custom domain uses "/"
   build: { outDir: "dist", sourcemap: false }
 });
