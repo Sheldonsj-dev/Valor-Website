@@ -1,3 +1,8 @@
-﻿export default function App() {
-  return <h1 style={{padding:"2rem"}}>Hello Valor — probe</h1>;
+export default function App() {
+  return (
+    <div style={{ padding: 24, fontFamily: "system-ui" }}>
+      <h1 style={{ fontSize: 28, marginBottom: 8 }}>Hello from Valor Venue</h1>
+      <p>If you can read this, React mounted successfully.</p>
+    </div>
+  );
 }
