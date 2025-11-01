@@ -6,7 +6,7 @@
     "scripts":  {
                     "dev":  "vite",
                     "build":  "vite build",
-                    "postbuild":  "node -e \"require(\u0027fs\u0027).copyFileSync(\u0027dist/index.html\u0027,\u0027dist/404.html\u0027)\"",
+                    "postbuild":  "node -e \"require(\u0027\u0027fs\u0027\u0027).copyFileSync(\u0027\u0027dist/index.html\u0027\u0027,\u0027\u0027dist/404.html\u0027\u0027)\"",
                     "lint":  "eslint .",
                     "preview":  "vite preview"
                 },
