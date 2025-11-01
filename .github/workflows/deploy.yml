@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -36,6 +36,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Show dist contents
+        run: |
+          ls -la
+          ls -la dist || (echo "dist not found" && exit 1)
+          test -f dist/index.html || (echo "index.html missing" && exit 1)
+
       - name: Ensure SPA 404
         run: cp dist/index.html dist/404.html
 
@@ -45,11 +51,11 @@ jobs:
           path: dist
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy
         id: deployment
