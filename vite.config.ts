@@ -3,6 +3,6 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/",           // custom domain keeps "/"
+  base: "/",           // custom domain uses "/"
   build: { outDir: "dist", sourcemap: false }
 });
