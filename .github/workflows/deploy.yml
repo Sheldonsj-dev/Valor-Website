@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Configure GitHub Pages (recommended)
+      # Recommended GitHub Pages setup step
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -31,24 +31,26 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build project
         run: npm run build
 
-      # Don't copy 404 here. Your package.json postbuild already does it.
-      - name: Upload artifact
+      - name: Ensure SPA 404 fallback
+        run: cp dist/index.html dist/404.html
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy
         id: deployment
