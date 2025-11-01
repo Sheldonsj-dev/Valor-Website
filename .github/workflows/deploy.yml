@@ -1,4 +1,4 @@
-﻿name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -21,7 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Recommended GitHub Pages setup step
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -31,13 +30,13 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
+      - name: Install
         run: npm ci
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
-      - name: Ensure SPA 404 fallback
+      - name: Ensure SPA 404
         run: cp dist/index.html dist/404.html
 
       - name: Upload Pages artifact
